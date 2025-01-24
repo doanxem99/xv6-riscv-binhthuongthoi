@@ -9,8 +9,19 @@ void filter(int read_fd) {
 	}
 
 	short start = num;
-	printf("prime %d\n", start);
+	char digits[3] = {0};
+	int cnt = 3;
+	while (start > 0 && cnt >= 0) {
+		digits[--cnt] = (start % 10) + '0';
+		start /= 10;
+	}
 
+	// printf won't work
+	write(1, "prime ", 6);
+	write(1, digits, 3);
+	write(1, "\n", 1);
+
+	start = num;
 	int child_fd[2];
 	pipe(child_fd);
 
@@ -30,15 +41,12 @@ void filter(int read_fd) {
 
 int main() {
 	printf("prime 2\n");
-	printf("prime 3\n");
 
 	int parent_fd[2];
 	pipe(parent_fd);
 
-	for (short i = 5; i <= 280; i += 2) {
-		if (i % 3 != 0) {
-			write(parent_fd[1], &i, sizeof(i));
-		}
+	for (short i = 3; i <= 280; i += 2) {
+		write(parent_fd[1], &i, sizeof(i));
 	}
 	close(parent_fd[1]);
 	filter(parent_fd[0]);
