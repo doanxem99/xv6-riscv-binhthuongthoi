@@ -18,7 +18,7 @@ void filter(int read_fd) {
 
 	// printf won't work
 	write(1, "prime ", 6);
-	write(1, digits, 3);
+	write(1, digits + cnt, 3 - cnt);
 	write(1, "\n", 1);
 
 	start = num;
