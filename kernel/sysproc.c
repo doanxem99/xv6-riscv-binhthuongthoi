@@ -1,3 +1,4 @@
+// sysproc.c: System call implementations
 #include "types.h"
 #include "riscv.h"
 #include "defs.h"
@@ -90,4 +91,14 @@ sys_uptime(void)
   xticks = ticks;
   release(&tickslock);
   return xticks;
+}
+
+// trace system call
+uint64
+sys_trace(void)
+{
+  int mask;
+  argint(0, &mask); 
+  myproc()->trace_mask = mask;
+  return 0;
 }
